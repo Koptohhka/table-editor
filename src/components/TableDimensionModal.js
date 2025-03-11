@@ -13,7 +13,7 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
         let value = parseInt(e.target.value, 10);
 
         if (value > MAX_COLUMNS) {
-            setError(`Максимум столбцов: ${MAX_COLUMNS}`);
+            setError(`Maximum columns: ${MAX_COLUMNS}`);
             value = MAX_COLUMNS;
         } else {
             setError('');
@@ -25,7 +25,7 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
         let value = parseInt(e.target.value, 10);
 
         if (value > MAX_ROWS) {
-            setError(`Максимум строк: ${MAX_ROWS}`);
+            setError(`Maximum lines: ${MAX_ROWS}`);
             value = MAX_ROWS;
         } else {
             setError('');
@@ -35,7 +35,7 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
 
     const handleSubmit = () => {
         if (isNaN(rows) || isNaN(columns)  || rows < 1 || columns < 1) {
-            setError('Количество строк и столбцов должно быть не меньше 1');
+            setError('The number of rows and columns must be at least 1');
             return;
         }
         onSubmit(rows, columns);
@@ -48,10 +48,10 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
         <div className='shadow-overlay'>
             <div className="modal-overlay">
                 <div className="modal-content">
-                    <h4>Размер таблицы</h4>
+                    <h4>Table size</h4>
                     <div className="modal-input-group">
                         <label>
-                            Столбцы:
+                            Columns:
                             <input
                                 type="number"
                                 value={columns}
@@ -61,7 +61,7 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
                             />
                         </label>
                         <label>
-                            Строки:
+                            Rows:
                             <input
                                 type="number"
                                 value={rows}
@@ -74,10 +74,10 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
                     {error && <div className="modal-error">{error}</div>}
                     <div className="modal-buttons">
                         <button onClick={onClose} className="modal-btn modal-btn-cancel">
-                            Отмена
+                            Cancel
                         </button>
                         <button onClick={handleSubmit} className="modal-btn modal-btn-submit">
-                            Создать
+                            Add
                         </button>
                     </div>
                 </div>
