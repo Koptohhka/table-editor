@@ -34,7 +34,6 @@ const TableDimensionModal = ({ visible, onClose, onSubmit }) => {
     };
 
     const handleSubmit = () => {
-        console.log(columns, "columns")
         if (isNaN(rows) || isNaN(columns)  || rows < 1 || columns < 1) {
             setError('Количество строк и столбцов должно быть не меньше 1');
             return;
