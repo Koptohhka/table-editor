@@ -5,7 +5,7 @@
 Run the following command to install project dependencies:
 
 ```sh
-npm install
+yarn install
 ```
 
 #### Start the Application
@@ -13,7 +13,7 @@ npm install
 Run the app in development mode:
 
 ```sh
-npm start
+yarn start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
