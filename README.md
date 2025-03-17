@@ -35,6 +35,7 @@ npm install quill-better-table
 Import the required styles:
 
 ```javascript
+import Table from 'quill-better-table';
 import 'quill-better-table/dist/quill-better-table.css';
 ```
 
