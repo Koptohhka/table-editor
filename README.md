@@ -1,70 +1,137 @@
-# Getting Started with Create React App
+### Installation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### Install Dependencies
 
-## Available Scripts
+Run the following command to install project dependencies:
 
-In the project directory, you can run:
+```sh
+npm install
+```
 
-### `npm start`
+#### Start the Application
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Run the app in development mode:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```sh
+npm start
+```
 
-### `npm test`
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Quill Tables Integration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Installing `quill-better-table`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+To install the `quill-better-table` package, run:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+npm install quill-better-table
+```
 
-### `npm run eject`
+### Importing the Module and Styles
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Import the required styles:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```javascript
+import 'quill-better-table/dist/quill-better-table.css';
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Registering the Module
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Register the `better-table` module after declaring Quill:
 
-## Learn More
+```javascript
+Quill.register({
+  'modules/better-table': Table
+}, true);
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Configuring the Table Module
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Pass options for the table module during Quill initialization:
 
-### Code Splitting
+```javascript
+const quill = new Quill(editorContainer, {
+    theme: 'snow',
+    modules: {
+        ...,
+        table: false,
+        'better-table': {
+            operationMenu: {
+                items: {
+                    unmergeCells: {
+                        text: 'Another unmerge cells name'
+                    }
+                },
+                color: {
+                    colors: ['green', 'red', 'yellow', 'blue', 'white'],
+                    text: 'Background Colors:'
+                }
+            }
+        },
+    }
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## Custom Toolbar Icon and Handlers
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Defining Custom Toolbar Options
 
-### Making a Progressive Web App
+```javascript
+const toolbarOptions = [
+    [{ 'size': ['small', false, 'large', 'huge'] }, 'italic', 'underline',
+    { 'color': [] }, { 'background': [] }, { 'align': [] }, { 'list': 'ordered' }, { 'list': 'bullet' }, 'link',
+    // Adding table insertion button
+    { 'insertTable': 'table' }
+    ]
+];
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Adding a Custom Icon
 
-### Advanced Configuration
+```javascript
+const icons = Quill.import('ui/icons');
+icons['insertTable'] = `
+  <svg viewBox="0 0 18 18">
+    <rect class="ql-fill" x="3" y="3" width="4" height="4"></rect>
+    <rect class="ql-fill" x="11" y="3" width="4" height="4"></rect>
+    <rect class="ql-fill" x="3" y="11" width="4" height="4"></rect>
+    <rect class="ql-fill" x="11" y="11" width="4" height="4"></rect>
+  </svg>
+`;
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Defining Toolbar Handlers
 
-### Deployment
+```javascript
+const quill = new Quill(editorContainer, {
+    theme: 'snow',
+    modules: {
+        toolbar: {
+            container: toolbarOptions,
+            handlers: {
+                insertTable: () => {
+                    setModalState(true);
+                }
+            }
+        },
+    }
+});
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Using `quill-better-table` API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Inserting a Table
+
+```javascript
+const onSubmitHandler = (rows, columns) => {
+  const tableModule = quillRef.current.getModule('better-table');
+  tableModule.insertTable(rows, columns);
+};
+```
